@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "24052614590",
+    "project_id": "devhack-3af24",
+    "storage_bucket": "devhack-3af24.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:24052614590:android:8bdcdca39a710f3ce625ef",
+        "android_client_info": {
+          "package_name": "com.example.dev_hack"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "24052614590-nm3702nua6s85p41hidldpik3hndktro.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBJVldampZEJZbOeoi3MBE4Mit752q6-Hs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "24052614590-nm3702nua6s85p41hidldpik3hndktro.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

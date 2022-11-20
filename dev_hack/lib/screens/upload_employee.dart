@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dev_hack/helper/Employee.dart';
@@ -5,6 +6,8 @@ import 'package:dev_hack/services/registration_service.dart';
 import 'package:excel/excel.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+
+import 'EmployeeCard.dart';
 
 class UploadEmployee extends StatefulWidget {
   const UploadEmployee({Key? key}) : super(key: key);
@@ -15,26 +18,22 @@ class UploadEmployee extends StatefulWidget {
 }
 
 bool are_employees = false;
+bool are_employees2 = false;
 CollectionReference _collectionRef = FirebaseFirestore.instance
     .collection('company')
-    .doc('hEjaeUMSiFvCpEm0ZeSf')
+    .doc('W1yutMLrJ2wiWuHWR0Hy')
     .collection('employee');
-
-
-
-
-
-Future<int> countDocuments() async {
-  QuerySnapshot querySnapshot = await _collectionRef.get();
-  final allData = querySnapshot.docs.map((doc) => doc.data()).toList();
-  return allData.length;
-}
 
 class _UploadEmployeeState extends State<UploadEmployee> {
   var db = FirebaseFirestore.instance;
 
+  List<Employee> employeeList = [];
+
   @override
   Widget build(BuildContext context) {
+    double width = MediaQuery.of(context).size.width;
+    double height = MediaQuery.of(context).size.height;
+
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: Column(
@@ -62,84 +61,78 @@ class _UploadEmployeeState extends State<UploadEmployee> {
               )
             ],
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Text(
-                'Add excel with employees to generate accounts',
-                style: TextStyle(
+          Container(
+            height: 0.1 * height,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text("Employee List", style: TextStyle(
                   fontSize: 34,
                   fontFamily: 'Raleway',
                   fontWeight: FontWeight.w600,
                   color: Color.fromRGBO(28, 35, 33, 1),
-                ),
-              ),
-            ],
+                ),),
+              ],
+            ),
           ),
+          !are_employees2 ? Container(
+            height: 0.2 * height,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  'Add excel with employees to generate accounts',
+                  style: TextStyle(
+                    fontSize: 15,
+                    fontFamily: 'Raleway',
+                    fontWeight: FontWeight.w600,
+                    color: Color.fromRGBO(28, 35, 33, 1),
+                  ),
+                ),
+              ],
+            ),
+          ) : Container(),
           FutureBuilder(
               future: countDocuments(),
               builder: (context, snapshot) {
                 if (!snapshot.hasData) {
                   return const Center(child: CircularProgressIndicator());
                 } else {
-                  return are_employees
-                      ? FutureBuilder(
-                          future: countDocuments(),
-                          builder: (context, newSnapshot) {
-                            if (!newSnapshot.hasData) {
+                  return are_employees2
+                      ? StreamBuilder(
+                          stream: _collectionRef.snapshots(),
+                          builder: (BuildContext context,
+                              AsyncSnapshot<QuerySnapshot> snapshot) {
+                            if (!snapshot.hasData) {
                               return const Center(
                                   child: CircularProgressIndicator());
                             } else {
-                              return Text(newSnapshot.data.toString());
+                              return Container(
+                                height: 0.6 * height,
+                                child: new ListView(
+                                    children: getExpenseItems(snapshot)),
+                              );
                             }
                           })
-                      : snapshot.data == 0
+                      : snapshot.data?.length == 0
                           ? Row(
                               mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
-                                IconButton(
-                                    onPressed: () async {
-                                      await importFile();
-                                    },
-                                    icon: Icon(
-                                      Icons.add,
-                                      color: Colors.blue,
-                                      size: 100,
-                                    ))
+                                Container(
+                                  height: 0.1 * height,
+                                  child: IconButton(
+                                      onPressed: () async {
+                                        await importFile();
+                                      },
+                                      icon: Icon(
+                                        Icons.add,
+                                        color: Colors.blue,
+                                      )),
+                                )
                               ],
                             )
-                          : Text('ana are mere si pere');
+                          : Text("");
                 }
-                // return FutureBuilder<int>(
-                //   future: countDocuments(db),
-                //   builder: (context, snapshot) {
-                //     return !are_employees ?
-                //     Row(
-                //       mainAxisAlignment: MainAxisAlignment.center,
-                //       crossAxisAlignment: CrossAxisAlignment.center,
-                //       children: [
-                //         IconButton(
-                //             onPressed: () async {
-                //               await importFile();
-                //             },
-                //             icon: Icon(
-                //               Icons.add,
-                //               color: Colors.blue,
-                //               size: 100,
-                //             )
-                //         )
-                //       ],
-                //     ) :
-                //     Text('ana are mere si pere');
-                //     // } else {
-                //     //   return const Center(
-                //     //     child: CircularProgressIndicator(),
-                //     //   );
-                //     // }
-                //   },
-                // );
               }),
           Expanded(
             child: Align(
@@ -179,13 +172,13 @@ class _UploadEmployeeState extends State<UploadEmployee> {
 
         Employee employee = Employee(email, full_name);
         var registration = RegistrationUser.FromRegistrationUser(
-            employee, 'hEjaeUMSiFvCpEm0ZeSf', UserType.Doctor);
+            employee, 'W1yutMLrJ2wiWuHWR0Hy', UserType.Doctor);
         await registration.registerUser().then((value) => print(value));
       }
     }
 
     setState(() {
-      are_employees = true;
+      are_employees2 = true;
     });
   }
 
@@ -199,4 +192,46 @@ class _UploadEmployeeState extends State<UploadEmployee> {
     await importFromExcel(file);
   }
 
+  Future<List<Object?>> countDocuments() async {
+    QuerySnapshot querySnapshot = await _collectionRef.get();
+    final allData = querySnapshot.docs.map((doc) => doc.data()).toList();
+    setState(() {
+      are_employees = true;
+    });
+    return allData;
+  }
+
+  getExpenseItems(AsyncSnapshot<QuerySnapshot> snapshot) {
+    return snapshot.data?.docs
+        .map((doc) => Card(
+          child: new ListTile(
+                leading: Container(
+                  width: 50,
+                  height: 50,
+                  decoration: BoxDecoration(
+                    border: Border.all(width: 2),
+                    shape: BoxShape.circle,
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [Text(doc["wellness"])],
+                  ),
+                ),
+                title: new Text(doc["fullName"]),
+                subtitle: TextButton(onPressed: () {}, child: Text("A day off request was submitted", style: TextStyle(color: Color(0xfff5cb5c)),),),
+                trailing: IconButton(onPressed: () {}, icon: Icon(Icons.desktop_access_disabled_outlined)),
+              ),
+        ))
+        .toList();
+  }
+
+  int _deleteItem(int item) {
+    setState(() {
+      print(employeeList.length);
+      employeeList.removeAt(item);
+      print(employeeList.length);
+    });
+    return 0;
+  }
 }

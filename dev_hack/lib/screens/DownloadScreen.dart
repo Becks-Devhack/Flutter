@@ -95,7 +95,7 @@ class _DownloadScreenState extends State<DownloadScreen> {
               Row(
                   mainAxisAlignment: MainAxisAlignment.center, children: [
                 Image.asset(
-                    'assets/Asset 5@4x.png',
+                    'assets/AppLogo-removebg-preview.png',
                     width: width/2),
               ]),
 

@@ -55,7 +55,7 @@ class _LoadingScreenState extends State<LoadingScreen> with TickerProviderStateM
                 child:ScaleTransition(
                   scale: _animation,
                   alignment: Alignment.center,
-                  child: Image.asset('assets/logo.png'),
+                  child: Image.asset('assets/AppLogo-removebg-preview.png'),
                 )
             ),
             Row(

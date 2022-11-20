@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.dev_hack">
    <application
-        android:label="dev_hack"
+        android:label="Health Host"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

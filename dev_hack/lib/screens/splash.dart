@@ -19,9 +19,7 @@ class _Splash extends State<Splash> with TickerProviderStateMixin{
     Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-            builder: (context) => FirstPage (
-              title: 'First Page',
-            )
+            builder: (context) => FirstPage ()
         )
     );
   }

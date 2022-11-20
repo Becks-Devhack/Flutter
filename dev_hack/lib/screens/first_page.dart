@@ -5,8 +5,7 @@ import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'login_page.dart';
 
 class FirstPage extends StatefulWidget{
-  const FirstPage ({Key? key, required this.title}) : super (key: key);
-  final String title;
+  const FirstPage ({Key? key}) : super (key: key);
 
   @override
   State<FirstPage> createState() => _FirstPage();
@@ -25,9 +24,7 @@ class _FirstPage  extends State<FirstPage>{
       Navigator.pushReplacement(
           context,
           MaterialPageRoute(
-              builder: (context) => LoginPage (
-                title: 'Login Page',
-              )
+              builder: (context) => LoginPage ()
           )
       );
     }

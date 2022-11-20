@@ -42,6 +42,10 @@ dependencies:
   carousel_slider: ^4.1.1
   smooth_page_indicator: ^1.0.0+2
   intro_slider: ^4.2.0
+  flutter_cache_manager: ^3.3.0
+  file_picker: ^5.2.2
+  excel: ^2.0.0-null-safety-3
+  random_password_generator: ^0.2.1
 
 dev_dependencies:
   flutter_test:

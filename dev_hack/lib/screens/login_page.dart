@@ -1,32 +1,25 @@
+import 'package:dev_hack/screens/carousel_screen.dart';
 import 'package:dev_hack/screens/register_screen.dart';
 import 'package:flutter/material.dart';
 
 import '../services/login_service.dart';
 
 class LoginPage extends StatefulWidget{
-  const LoginPage ({Key? key, required this.title}) : super (key: key);
-  final String title;
+  const LoginPage ({Key? key}) : super (key: key);
+  static const routeName = '/login';
 
   @override
   State<LoginPage> createState() => _LoginPage();
 }
+
+TextEditingController emailController = new TextEditingController();
+TextEditingController passwordController = new TextEditingController();
 
 class _LoginPage  extends State<LoginPage>{
   @override
   Widget build(BuildContext context) {
     var height = MediaQuery.of(context).size.height;
     var width = MediaQuery.of(context).size.width;
-    TextEditingController emailController = new TextEditingController();
-    TextEditingController passwordController = new TextEditingController();
-
-    void navigateCarouselScreen () {
-      // Navigator.pushReplacement(
-      //     context,
-      //     MaterialPageRoute(
-      //         builder: (context) => CarouselScreen ()
-      //     )
-      // );
-    }
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
@@ -99,7 +92,7 @@ class _LoginPage  extends State<LoginPage>{
                   await Response.loginUser().then((value) => response = value);
                   print(response);
                   if (response == LoginResponse.LoignSuccessful){
-                    navigateCarouselScreen();
+                    Navigator.pushNamed(context, CarouselScreen.routeName);
                   }
                   else if (response == LoginResponse.LoginError){
                     showDialog(context: context,
@@ -135,12 +128,7 @@ class _LoginPage  extends State<LoginPage>{
             Text("Don't have an account?"),
             GestureDetector(
                 onTap: () {
-                  Navigator.push<Widget>(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => RegisterScreen(),
-                    ),
-                  );
+                  Navigator.pushNamed(context, RegisterScreen.routeName);
                 },
                 child: Text( 'Sign in',
                 style: TextStyle(color: Colors.amber[900])

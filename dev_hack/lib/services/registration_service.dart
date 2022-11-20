@@ -2,6 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
+import '../helper/Employee.dart';
+
 //code for designing the UI of our text field where the user writes his email id or password
 
 enum RegistrationResponse{
@@ -19,49 +21,61 @@ enum UserType{
 
 class RegistrationUser {
   //appManager
-  late String _hospitalName;
-  late String _firstName;
-  late String _lastName;
-  late String _username;
-  late UserType _user;
-  late String _idDataBase;
+  String _hospitalName = '';
+  String _firstName = '';
+  String _lastName = '';
+  UserType _user = UserType.AppManager;
+  String _idDataBase = '';
 
   // doctors
-  late String _fullName;
-  late String _specialization;
+  String _fullName = '';
 
   // common
-  late String _email;
-  late String _password;
+  String _email = '';
+  String _password = '';
+
+  Employee employee = Employee('', '');
+  String tag = '';
 
   RegistrationUser(this._hospitalName, this._firstName, this._lastName, this._email, this._password, this._user);
-  RegistrationUser.FromRegistrationUser(this._fullName, this._idDataBase, this._specialization, this._email, this._password, this._user);
+  RegistrationUser.FromRegistrationUser(this.employee, this.tag, this._user);
 
   Future<RegistrationResponse> registerUser() async {
     try{
-      final credential = await FirebaseAuth.instance.createUserWithEmailAndPassword(email: _email, password: _password);
+      final credential;
+      if (_user == UserType.Doctor) {
+        credential = await FirebaseAuth.instance.createUserWithEmailAndPassword(email: employee.email, password: employee.password);
+      } else {
+        credential = await FirebaseAuth.instance.createUserWithEmailAndPassword(email: _email, password: _password);
+      }
 
       switch(_user) {
         case UserType.AppManager:
           var db = FirebaseFirestore.instance;
           var newUser = <String, dynamic> {
-            "hospitalName": _hospitalName,
+            "company": _hospitalName,
             "firstName": _firstName,
             "lastName": _lastName,
             'email': _email,
-            "password": _password
+            "password": _password,
+            "id_company": _idDataBase,
+            "status": "Admin"
           };
-          db.collection('hospitals').add(newUser).then((DocumentReference doc) => _idDataBase = doc.id);
+          await db.collection('company').add(newUser).then((DocumentReference doc) => _idDataBase = doc.path.split('/')[1]);
+          db.collection('company').doc(_idDataBase).update({'id_company': _idDataBase});
           break;
         case UserType.Doctor:
+          print('fjihdsasodiufjsd');
           var db = FirebaseFirestore.instance;
           var newUser = <String, dynamic>{
-            'fullName': _fullName,
-            'specialization': _specialization,
-            'email': _email,
-            'password': _password,
+            'fullName': employee.full_name,
+            'email': employee.email,
+            'password': employee.password,
+            'id_company': employee.id_company,
+            'status': employee.status,
+            'wellness': employee.wellness_score.toString(),
           };
-          db.collection('hospitals').doc(_idDataBase).collection('doctors').add(newUser).then((value) => null);
+          db.collection('company').doc(tag).collection('employee').add(newUser).then((value) => print(value.id));
           break;
       }
 

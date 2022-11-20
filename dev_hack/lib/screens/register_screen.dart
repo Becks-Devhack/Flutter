@@ -1,3 +1,4 @@
+import 'package:dev_hack/screens/login_page.dart';
 import 'package:flutter/material.dart';
 
 import '../services/login_service.dart';
@@ -5,6 +6,7 @@ import '../services/registration_service.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({Key? key}) : super(key: key);
+  static const routeName = '/register';
 
   @override
   State<RegisterScreen> createState() => _RegisterScreenState();
@@ -26,11 +28,26 @@ class _RegisterScreenState extends State<RegisterScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.start,
+            Stack(
               children: [
-                Image.asset(
-                  'assets/Component3.png',
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Image.asset(
+                      'assets/Component3.png',
+                    )
+                  ],
+                ),
+                Padding(
+                    padding: EdgeInsets.fromLTRB(10, 10, 0, 0),
+                    child: IconButton(
+                        onPressed: () => Navigator.pop(context),
+                        icon: Icon(
+                          Icons.arrow_back,
+                          color: Colors.white,
+                          size: 48,
+                        )
+                    ),
                 )
               ],
             ),
@@ -167,16 +184,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                    var registerResponse;
                    await user.registerUser().then((value) => registerResponse = value);
                    var userLog = LoginUser(emailController.text, passwordController.text);
-                   
-                   print(registerResponse);
 
                   if(registerResponse == RegistrationResponse.RegistrationSuccessful){
-                    // Navigator.push<Widget>(
-                    //   context,
-                    //   MaterialPageRoute(
-                    //     builder: (context) => CarouselScreen(),
-                    //   ),
-                    // );
+                    Navigator.pushNamed(context, LoginPage.routeName);
                   }
                   else{
                     showDialog(context: context,

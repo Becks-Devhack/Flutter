@@ -60,7 +60,7 @@ class _Splash extends State<Splash> with TickerProviderStateMixin{
                 child:ScaleTransition(
                   scale: _animation,
                   alignment: Alignment.center,
-                  child: Image.asset('assets/logo.png'),
+                  child: Image.asset('assets/AppLogo-removebg-preview.png'),
                 )
             ),
             Row(

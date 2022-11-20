@@ -3,6 +3,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 
+import 'appFeatures_screen.dart';
+
 class CarouselScreen extends StatefulWidget {
   const CarouselScreen({Key? key}) : super(key: key);
   static const routeName = '/carousel';
@@ -112,6 +114,8 @@ class _CarouselScreenState extends State<CarouselScreen> {
                                       onTap: () {
                                         if (i == 1) {
                                           Navigator.pushNamed(context, UploadEmployee.routeName);
+                                        } else if (i == 0) {
+                                          Navigator.pushNamed(context, AppFeaturesScreen.routeName);
                                         }
                                       }
                                     ),

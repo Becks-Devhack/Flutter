@@ -90,7 +90,7 @@ class _FirstPage  extends State<FirstPage>{
               alignment: Alignment.center,
               width: 275,
               height: 150,
-              child: Image.asset('assets/logo.png'),
+              child: Image.asset('assets/AppLogo-removebg-preview.png'),
             ),
             Container(
               alignment: Alignment.bottomCenter,

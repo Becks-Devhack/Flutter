@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 
+import 'DownloadScreen.dart';
+import 'LoadingScreen.dart';
+
 class PaymentCheckoutScreen extends StatefulWidget {
   const PaymentCheckoutScreen({Key? key}) : super(key: key);
   static final routeName = '/payment';
@@ -77,13 +80,12 @@ class _PaymentCheckoutScreenState extends State<PaymentCheckoutScreen> {
                                         fontSize: 20,
                                         color: Colors.white
                                     )),
-                                // onTap: () {
-                                //   Navigator.push<Widget>(
-                                //     context,
-                                //     MaterialPageRoute(
-                                //       builder: (context) => DownloadScreen(),
-                                //     ),
-                                //   );}
+                                onTap: () {
+                                    Navigator.pushNamed(
+                                        context,
+                                        LoadingScreen.routeName
+                                    );
+                                  }
                             ),
                             SizedBox(
                               width: 30,

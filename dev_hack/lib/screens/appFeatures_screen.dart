@@ -1,3 +1,4 @@
+import 'package:dev_hack/screens/PaymentCheckoutScreen.dart';
 import 'package:flutter/material.dart';
 
 
@@ -146,12 +147,8 @@ class _AppFeaturesScreenState extends State<AppFeaturesScreen> {
                                       color: Colors.white
                                   )),
                               onTap: () {
-                                // Navigator.push<Widget>(
-                                //   context,
-                                //   MaterialPageRoute(
-                                //     builder: (context) => AddHospitalLogoScreen(),
-                                //   ),
-                                // );}
+                                Navigator.pushNamed(
+                                    context, PaymentCheckoutScreen.routeName);
                               }
                           ),
                           SizedBox(

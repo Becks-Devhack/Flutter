@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dev_hack/screens/PaymentCheckoutScreen.dart';
 import 'package:dev_hack/screens/appFeatures_screen.dart';
 import 'package:dev_hack/screens/carousel_screen.dart';
 import 'package:dev_hack/screens/login_page.dart';
@@ -36,6 +37,7 @@ class MyApp extends StatelessWidget {
         CarouselScreen.routeName: (ctx) => CarouselScreen(),
         UploadEmployee.routeName: (ctx) => UploadEmployee(),
         AppFeaturesScreen.routeName: (ctx) => AppFeaturesScreen(),
+        PaymentCheckoutScreen.routeName: (ctx) => PaymentCheckoutScreen(),
       },
       home: const Splash(title: "splash_screen"),
     );
